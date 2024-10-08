@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          axios.get("https://eventsapi.onrender.com/api/Events").then((res) => {
+            var calendarEl = document.getElementById("calendar");
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+              initialView: "dayGridMonth",
+              events: res.data,
+            });
+            calendar.render();
+          });
+        });
+
+        function postt() {
+            const title=prompt("enter your title");
+            const start=prompt("enter your start");
+          axios.post("https://eventsapi.onrender.com/api/Events",
+          {
+           "title": title,
+           "start": start
+          }
+          ).then((res) => {
+            var calendarEl = document.getElementById("calendar");
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+              initialView: "dayGridMonth",
+              events: res.data,
+            });
+            calendar.render();
+          });
+        };
+
+        function deletee() {//מחיקה על פי id
+            const id=prompt("enter your id");
+          axios.delete(`https://eventsapi.onrender.com/api/Events/${id}`).then((res) => {
+            var calendarEl = document.getElementById("calendar");
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+              initialView: "dayGridMonth",
+              events: res.data,
+            });
+            calendar.render();
+          });
+        };
+
+        function putt() {//עדכון על פי id
+            // alert("abc");
+            const id=prompt("enter your id");
+            const newTitle=prompt("enter your newTitle");
+            const newStart=prompt("enter your newStart");
+          axios.put(`https://eventsapi.onrender.com/api/Events/${id}`,
+          {
+           "title": newTitle,
+           "start": newStart
+          }
+          ).then((res) => {
+            var calendarEl = document.getElementById("calendar");
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+              initialView: "dayGridMonth",
+              events: res.data,
+            });
+            calendar.render();
+          });
+        };
+
+    </script>
+    
+    
+  </head>
+
+
+  <body>
+    <div id='calendar'></div>
+    <button onclick="putt()">putt</button>
+    <button onclick="deletee()">deletee</button>
+    <button onclick="postt()">postt</button>
+  </body>
+</html>
